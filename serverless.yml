@@ -1,0 +1,78 @@
+service: pinpoint-autoevent
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+# plugins:
+#   - serverless-dynamodb-local
+#   - serverless-offline
+#   - serverless-plugin-multiple-responses
+
+custom:
+  dynamodb:
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+    migration:
+      dir: offline/migrations
+
+package:
+  exclude:
+    - CognitoUserPool
+
+provider:
+  name: aws
+  timeout: 300
+  profile: ${file(./config/aws_params.yml):profile}
+  region: ${file(./config/aws_params.yml):region}
+  stage: ${file(./config/aws_params.yml):stage}
+  tags: 
+    env: ${file(./config/aws_params.yml):stage}
+  memorySize: 1536
+  stackTags: 
+    projectname: pinpoint-autoevent
+  deploymentBucket: ${file(./config/aws_params.yml):DEPLOYMENT_S3_BUCKET}
+  versionFunctions: false
+  runtime: nodejs6.10
+  # apiKeys: false
+ # role: arn:aws:iam::765167583057:role/bing-scraper-pr-us-east-2-lambdaRole
+ # cfnRole: arn:aws:iam::765167583057:role/bing-scraper-pr-us-east-2-lambdaRole
+  # apiKeys:
+  #   - googlesearchkey1
+  #   - googlesearchkey2
+  #   - googlesearchkey3
+  # usagePlan:
+  #   quota:
+  #     limit: 1000
+  #     offset: 2
+  #     period: DAY
+  #   throttle:
+  #     burstLimit: 200
+  #     rateLimit: 100
+  #arn:aws:mobiletargeting:us-east-1:${file(./config/aws_params.yml):AWS_ACCOUNT_ID}:apps/${file(./config/aws_params.yml):PINPOINT_APP_ID}/events
+  environment:
+    PINPOINT_APP_ID: ${file(./config/aws_params.yml):PINPOINT_APP_ID}
+    AWS_REGION_NAME: ${file(./config/aws_params.yml):region}
+    PINPOINT_API_ENDPOINT: ${file(./config/aws_params.yml):PINPOINT_ENDPOINT}
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - mobiletargeting:PutEvents
+      Resource: "arn:aws:mobiletargeting:us-east-1:${file(./config/aws_params.yml):AWS_ACCOUNT_ID}:*"
+  stackPolicy: 
+    - Effect: Allow
+      Principal: "*"
+      Action: "Update:*"
+      Resource: "*"
+    - Effect: Deny
+      Principal: "*"
+      Action:
+        - Update:Replace
+        - Update:Delete
+      Condition:
+        StringEquals:
+          ResourceType:
+            - AWS::EC2::Instance
+
+functions: ${file(./config/functions.yml):functions}

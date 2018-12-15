@@ -1,0 +1,20 @@
+{
+  "name": "pinpoint-autoevent",
+  "version": "1.0.0",
+  "description": "pinpoint-autoevent using serverless framework",
+  "repository": "",
+  "author": "Yashwant Gaikawad <yashwant@visionalyst.com>",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^2.6.1",
+    "aws-amplify": "1.1.7",
+    "aws-cli": "0.0.2",
+    "aws-sdk": "2.338.0",
+    "serverless-offline": "^3.31.3",
+    "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0"
+  }
+}

@@ -1,0 +1,10 @@
+#AWS Deployment region
+region: us-east-1
+#AWS Deployment stage
+stage: dev
+#AWS Deployment profile
+profile: <your local AWS cli profile name>
+AWS_ACCOUNT_ID: <Aws Account Id>
+DEPLOYMENT_S3_BUCKET: <AWS Bucket name>
+PINPOINT_APP_ID: <Your Pinpoint App Id>
+PINPOINT_ENDPOINT: https://pinpoint.us-east-1.amazonaws.com/v1

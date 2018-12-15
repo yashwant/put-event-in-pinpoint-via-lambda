@@ -1,0 +1,17 @@
+functions:
+  pinpoint_addevent:
+    handler: src/pinpoint/addEvent.addEvent
+    events:
+      - http:
+          path: pinpoint/addEvent
+          method: get
+          cors: true
+          integration: lambda
+  # pinpoint_addevent_amplify:
+  #   handler: src/pinpoint/addEvent_amplify.addEvent
+  #   events:
+  #     - http:
+  #         path: pinpoint/addEvent/amplify
+  #         method: get
+  #         cors: true
+  #         integration: lambda

@@ -1,0 +1,7 @@
+.serverless
+node_modules
+config/aws_params.yml
+.DS_Store
+results/
+public_key
+
