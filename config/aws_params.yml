@@ -1,0 +1,14 @@
+#AWS Deployment region
+region: us-east-1
+#AWS Deployment stage
+stage: dev
+#AWS Deployment profile
+profile: yashwant.xeroeta
+AWS_ACCOUNT_ID: 365256245028
+DEPLOYMENT_S3_BUCKET: pinpoint-autoevent-deployment
+PINPOINT_APP_ID: 99a570dcde9c4220814af8b1ff550912
+PINPOINT_ENDPOINT: https://pinpoint.us-east-1.amazonaws.com/v1
+
+PINPOINT_LAMBDA_ROLE: arn:aws:sts::365256245028:assumed-role/pinpoint-autoevent-dev-us-east-1-lambdaRole/pinpoint-autoevent-dev-pinpoint_addevent 
+PINPOINT_RESOURCE: arn:aws:mobiletargeting:us-east-1:365256245028:apps/99a570dcde9c4220814af8b1ff550912/events
+PINPOINT_RESOURCE_ACTION: mobiletargeting:PutEvents

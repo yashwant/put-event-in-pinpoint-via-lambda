@@ -7,6 +7,9 @@ frameworkVersion: ">=1.1.0 <2.0.0"
 #   - serverless-offline
 #   - serverless-plugin-multiple-responses
 
+plugins:
+  - serverless-sam
+  
 custom:
   dynamodb:
     start:
