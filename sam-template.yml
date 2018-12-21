@@ -1,0 +1,101 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: 'SAM template for Serverless framework service: '
+Resources:
+  Pinpoint_addevent:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: src/pinpoint/addEvent.addEvent
+      Runtime: nodejs6.10
+      CodeUri: >-
+        /Users/yashwant/www/AlexDorandish/pinpoint/pinpoint-autoevent/.serverless/pinpoint-autoevent.zip
+      MemorySize: 1536
+      Timeout: 300
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'mobiletargeting:PutEvents'
+              Resource: 'arn:aws:mobiletargeting:us-east-1:365256245028:*'
+      Environment:
+        Variables:
+          PINPOINT_APP_ID: 99a570dcde9c4220814af8b1ff550912
+          AWS_REGION_NAME: us-east-1
+          PINPOINT_API_ENDPOINT: 'https://pinpoint.us-east-1.amazonaws.com/v1'
+      Events:
+        Event1:
+          Type: Api
+          Properties:
+            Path: /pinpoint/addEvent
+            Method: get
+            RestApiId:
+              Ref: PinpointAutoevent
+  PinpointAutoevent:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      StageName: dev
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title:
+            Ref: 'AWS::StackName'
+        paths:
+          /pinpoint/addEvent:
+            options:
+              x-amazon-apigateway-integration:
+                type: mock
+                requestTemplates:
+                  application/json: '{ "statusCode" : 200 }'
+                responses:
+                  default:
+                    statusCode: 200
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key'''
+                      method.response.header.Access-Control-Allow-Methods: '''get'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                    responseTemplates:
+                      application/json: '{}'
+              responses:
+                '200':
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
+            get:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${Pinpoint_addevent.Arn}/invocations
+                responses:
+                  default:
+                    statusCode: 200
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key'''
+                      method.response.header.Access-Control-Allow-Methods: '''get'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                    responseTemplates:
+                      application/json: '{}'
+              responses:
+                '200':
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
+  Pinpoint_addeventLambdaPermission:
+    Type: 'AWS::Lambda::Permission'
+    DependsOn:
+      - Pinpoint_addevent
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName:
+        Ref: Pinpoint_addevent
+      Principal: apigateway.amazonaws.com

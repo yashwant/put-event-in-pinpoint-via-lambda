@@ -78,4 +78,12 @@ provider:
           ResourceType:
             - AWS::EC2::Instance
 
-functions: ${file(./config/functions.yml):functions}
+functions:
+  pinpoint_addevent:
+    handler: src/pinpoint/addEvent.addEvent
+    events:
+      - http:
+          path: pinpoint/addEvent
+          method: get
+          cors: true
+          integration: lambda
