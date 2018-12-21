@@ -9,7 +9,7 @@ frameworkVersion: ">=1.1.0 <2.0.0"
 
 plugins:
   - serverless-sam
-  
+
 custom:
   dynamodb:
     start:
@@ -79,7 +79,7 @@ provider:
             - AWS::EC2::Instance
 
 functions:
-  pinpoint_addevent:
+  pinpointAddevent:
     handler: src/pinpoint/addEvent.addEvent
     events:
       - http:
