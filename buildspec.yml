@@ -2,9 +2,9 @@ version: 0.1
 phases:
   install:
     commands:
-      - npm install
       - npm install -g mocha
       - npm install -g serverless
+      - npm install
   build:
     commands:
       - serverless package --stage cicd
